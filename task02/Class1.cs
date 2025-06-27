@@ -20,7 +20,7 @@ public class StudentService
     => _students.Where(s => s.Faculty == faculty);
 
     public IEnumerable<Student> GetStudentWithMinAverageGrade(double minAverageGrade)
-    => _students.Where(s => s.Grades.Average () >= minAverageGrade);
+    => _students.Where(s => s.Grades.Average() >= minAverageGrade);
 
     public IEnumerable<Student> GetStudentsOrderedByName()
     => _students.OrderBy(s => s.Name);
