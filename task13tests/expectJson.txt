@@ -1,0 +1,11 @@
+{
+  "FirstName": "Ivan",
+  "LastName": "Chvalyuk",
+  "BirthDate": "11.03.2006",
+  "Grades": [
+    {
+      "Name": "Algebra",
+      "Grade": 4
+    }
+  ]
+}
