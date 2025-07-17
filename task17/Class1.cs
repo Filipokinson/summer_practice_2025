@@ -175,21 +175,15 @@ public class SoftStopCommand : ICommand
     public void Execute() => thisThread.RequestSoftStop();
 }
 
-public class LongCommand : ISteppableCommand
+public class TestCommand : ISteppableCommand
 {
+    private readonly int id;
     private int counter = 0;
-    private readonly int steps;
-    public bool IsFinished => counter >= steps;
-
-    public LongCommand(int steps)
-    {
-        this.steps = steps;
-    }
+    public TestCommand(int id) { this.id = id; }
     public bool ExecuteStep()
     {
-        counter++;
-        Console.WriteLine($"LongCommand step {counter}");
-        return counter >= steps;
+        Console.WriteLine($"Поток {id} вызов {++counter}");
+        return counter >= 3;
     }
     public void Execute()
     {
@@ -197,11 +191,19 @@ public class LongCommand : ISteppableCommand
     }
 }
 
-public class QuickCommand : ICommand
+class Program
 {
-    public bool Done { get; private set; }
-    public void Execute()
+    static void Main()
     {
-        Done = true;
+        var server = new ServerThread();
+        server.Start();
+
+        for (int i = 1; i <= 5; i++)
+            server.Enqueue(new TestCommand(i));
+
+        server.Enqueue(new HardStopCommand(server));
+        server.Join();
+
+        Console.WriteLine("Выполнение завершено");
     }
 }
